@@ -14,7 +14,7 @@ import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
-public class dewebsockify extends WebSocketClient {
+public class Dewebsockify extends WebSocketClient {
 
     private Socket csocket;
     private InputStream csocketIn;
@@ -28,13 +28,7 @@ public class dewebsockify extends WebSocketClient {
                 csocketIn = csocket.getInputStream();
                 csocketOut = csocket.getOutputStream();
                 while ((n = csocketIn.read(b)) >= 0) {
-                    //ByteBuffer bbuf = ByteBuffer.allocate(n);
-                    //bbuf.put(b, 0, n);
-                    //bbuf.position(0);
-                    //send(bbuf);
-                    //System.out.write(Arrays.copyOfRange(b, 0, n));
                     send(Arrays.copyOfRange(b, 0, n));
-                    //send(new String(b, 0, n));
                 }
             } catch (IOException e) {
                 System.out.println("Exception caught when trying to read from socket"
@@ -46,12 +40,12 @@ public class dewebsockify extends WebSocketClient {
         }
     }
 
-    public WsClient( URI serverURI, Socket csocket ) {
+    public Dewebsockify( URI serverURI, Socket csocket ) {
         super( serverURI );
         this.csocket = csocket;
     }
 
-    public WsClient( URI serverURI, Draft draft, Socket csocket ) {
+    public Dewebsockify( URI serverURI, Draft draft, Socket csocket ) {
         super( serverURI, draft );
         this.csocket = csocket;
     }
@@ -112,7 +106,7 @@ public class dewebsockify extends WebSocketClient {
         try {
             ServerSocket serverSocket = new ServerSocket(portNumber);
             Socket clientSocket = serverSocket.accept();
-            dewebsockify c = new dewebsockify( new URI( wsServer ), new Draft_6455(), clientSocket);
+            Dewebsockify c = new Dewebsockify( new URI( wsServer ), new Draft_6455(), clientSocket);
             c.connect();
             System.out.println("finished main thread");
         } catch (IOException e) {
