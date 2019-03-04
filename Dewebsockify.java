@@ -25,14 +25,13 @@ public class Dewebsockify extends WebSocketClient {
             byte[] b = new byte[65536];
             int n;
             try{
-                csocketIn = csocket.getInputStream();
-                csocketOut = csocket.getOutputStream();
+                //csocketIn = csocket.getInputStream();
+                //csocketOut = csocket.getOutputStream();
                 while ((n = csocketIn.read(b)) >= 0) {
                     send(Arrays.copyOfRange(b, 0, n));
                 }
             } catch (IOException e) {
-                System.out.println("Exception caught when trying to read from socket"
-                    + " or open socket streams");
+                System.out.println("Exception caught when trying to read from socket");
                 System.out.println(e.getMessage());
             }
             System.out.println("exiting");
@@ -53,7 +52,16 @@ public class Dewebsockify extends WebSocketClient {
     @Override
     public void onOpen( ServerHandshake handshakedata ) {
                 System.out.println( "opened connection to ws server" );
-                (new InputThread()).start();
+                //(new InputThread()).start();
+                try{
+                    csocketIn = csocket.getInputStream();
+                    csocketOut = csocket.getOutputStream();
+                    (new InputThread()).start();
+                } catch (IOException e) {
+                    System.out.println("Exception caught when trying to open socket streams");
+                    System.out.println(e.getMessage());
+                    close();
+                }
     }
 
     @Override
