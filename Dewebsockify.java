@@ -113,10 +113,12 @@ public class Dewebsockify extends WebSocketClient {
 
         try {
             ServerSocket serverSocket = new ServerSocket(portNumber);
-            Socket clientSocket = serverSocket.accept();
-            Dewebsockify c = new Dewebsockify( new URI( wsServer ), new Draft_6455(), clientSocket);
-            c.connect();
-            System.out.println("finished main thread");
+            while(true){
+                Socket clientSocket = serverSocket.accept();
+                Dewebsockify c = new Dewebsockify( new URI( wsServer ), new Draft_6455(), clientSocket);
+                c.connect();
+                System.out.println("finished clientSocket main thread");
+            }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
                 + portNumber + " or listening for a connection");
